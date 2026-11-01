@@ -42,20 +42,4 @@ thead th { background: #eaf1f9; text-align: center; }
 th:nth-child(-n+2), td:nth-child(-n+2) { text-align: center; white-space: nowrap; }
 @media print { body { background:#fff; } .card, .actions, .warning, .sub, button { display:none !important; } }
 
-/* ---------- password gate ---------- */
-.gate {
-  position: fixed; inset: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(160deg, #10314e 0%, #1d6fb8 100%);
-}
-.gate-box {
-  background: #fff; border-radius: 12px; padding: 32px 28px;
-  width: min(92vw, 360px); text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,.35);
-  display: flex; flex-direction: column; gap: 12px;
-}
-.gate-box h1 { margin: 0; font-size: 1.3rem; }
-.gate-sub { margin: 0 0 4px; color: #5a6b7d; font-size: .92rem; }
-.gate-error { margin: 0; color: #b02a2a; font-size: .88rem; }
-.gate-box input { text-align: center; }
 

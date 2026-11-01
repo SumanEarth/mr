@@ -284,46 +284,6 @@ function init() {
   $("download_json").addEventListener("click", () => downloadJson(buildRows()));
   renderLists();
 }
-/* ---------- password gate ----------
-   পাসওয়ার্ড সরাসরি ফাইলে না রেখে এর SHA-256 hash রাখা হয়।
-   নতুন পাসওয়ার্ড সেট করতে: নিচের PASSWORD_HASH বদলে দিন।
-   নতুন hash বানাতে ব্রাউজারের Console-এ লিখুন:
-      makeHash("আপনার_নতুন_পাসওয়ার্ড")
-   প্রিন্ট হওয়া hex টি এখানে বসিয়ে আবার push করুন। */
-const PASSWORD_HASH = "11d322ea49f13e2cbb05afc6a22f0e992bfc745c404bbc49187c0eb91035631c";
-// ডিফল্ট পাসওয়ার্ড: sumon2026
-
-async function makeHash(text) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
-}
-if (typeof window !== "undefined") window.makeHash = makeHash;   // console-এ hash বানানোর সুবিধা
-async function tryLogin() {
-  const pw = $("gate_password").value;
-  if (!pw) return;
-  const hash = await makeHash(pw);
-  if (hash === PASSWORD_HASH) {
-    sessionStorage.setItem("rp_auth", "1");
-    unlockApp();
-  } else {
-    $("gate_error").classList.remove("hidden");
-    $("gate_password").value = "";
-    $("gate_password").focus();
-  }
-}
-
-function unlockApp() {
-  $("gate").classList.add("hidden");
-  $("app").hidden = false;
-  init();   // প্রথমবার খোলার পরেই অ্যাপ init হবে
-}
-
-function setupGate() {
-  if (sessionStorage.getItem("rp_auth") === "1") { unlockApp(); return; }
-  $("gate_submit").addEventListener("click", tryLogin);
-  $("gate_password").addEventListener("keydown", e => { if (e.key === "Enter") tryLogin(); });
-}
-
-document.addEventListener("DOMContentLoaded", setupGate);
+document.addEventListener("DOMContentLoaded", init);
 
 
