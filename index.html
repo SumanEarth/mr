@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>মাসিক অগ্রগতি প্রতিবেদন জেনারেটর</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<!-- লক স্ক্রিন -->
+<div id="gate" class="gate">
+  <div class="gate-box">
+    <h1>🔒 প্রবেশাধিকার</h1>
+    <p class="gate-sub">প্রতিবেদন জেনারেটর খুলতে পাসওয়ার্ড দিন</p>
+    <input type="password" id="gate_password" placeholder="পাসওয়ার্ড"
+      autocomplete="current-password" autofocus />
+    <button id="gate_submit" type="button" class="primary">প্রবেশ করুন</button>
+    <p id="gate_error" class="gate-error hidden">ভুল পাসওয়ার্ড — আবার চেষ্টা করুন।</p>
+  </div>
+</div>
+
+<div class="container" id="app" hidden>
+  <h1>মাসিক অগ্রগতি প্রতিবেদন জেনারেটর</h1>
+  <p class="sub">তথ্য যোগ করুন → প্রতিবেদন তৈরি করুন → XLSX ডাউনলোড করুন</p>
+
+  <section class="card">
+    <h2>১. মাস ও বছর</h2>
+    <div class="row">
+      <label>মাস
+        <select id="month"></select>
+      </label>
+      <label>বছর
+        <select id="year"></select>
+      </label>
+      <label>Random seed (ঐচ্ছিক)
+        <input type="number" id="seed" placeholder="খালি রাখলে বছর+মাস থেকে" />
+      </label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>২. উপজেলা (প্রতি উপজেলা = ২ কর্মদিবস, মাসজুড়ে random)</h2>
+    <div class="row">
+      <input type="text" id="uz_district" placeholder="জেলার নাম" />
+      <input type="text" id="uz_upazila" placeholder="উপজেলার নাম" />
+      <button id="add_upazila" type="button">+ যোগ করুন</button>
+    </div>
+    <ul id="upazila_list" class="item-list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>৩. তারিখ ছাড়া কাজ (daily task — এক দিন)</h2>
+    <div class="row">
+      <input type="text" id="daily_text" placeholder="কাজের বিবরণ" />
+      <button id="add_daily" type="button">+ যোগ করুন</button>
+    </div>
+    <ul id="daily_list" class="item-list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>৪. নির্দিষ্ট তারিখে নির্দিষ্ট কাজ (override)</h2>
+    <div class="row">
+      <input type="date" id="ov_date" />
+      <input type="text" id="ov_task" placeholder="কাজের বিবরণ" />
+      <button id="add_override" type="button">+ যোগ করুন</button>
+    </div>
+    <ul id="override_list" class="item-list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>৫. ছুটি (শুক্র-শনি ছাড়া অন্য ছুটি)</h2>
+    <div class="row">
+      <input type="date" id="lv_date" />
+      <input type="text" id="lv_reason" placeholder="কারণ (খালি হলে 'ছুটি')" />
+      <button id="add_leave" type="button">+ যোগ করুন</button>
+    </div>
+    <ul id="leave_list" class="item-list"></ul>
+  </section>
+
+  <section class="card">
+    <h2>৬. ডিফল্ট কাজ (বাকি working day-গুলোর টেক্সট)</h2>
+    <input type="text" id="default_task" class="w-full"
+      value="অতিরিক্ত দায়িত্ব হিসেবে অফিসিয়াল ও ফাইন্যান্স সম্পর্কিত কাজ" />
+  </section>
+
+  <section class="card">
+    <h2>৭. হেডার লাইন (সরকারি হেডার)</h2>
+    <div class="row"><input type="text" id="hdr_text" class="w-full" placeholder="নতুন হেডার লাইন" />
+      <button id="add_header" type="button">+ যোগ করুন</button></div>
+    <ul id="header_list" class="item-list"></ul>
+    <div class="row">
+      <button id="reset_header" type="button">↺ ডিফল্ট হেডার ফিরিয়ে আনুন</button>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button id="generate" type="button" class="primary">⚙ প্রতিবেদন তৈরি করুন</button>
+    <button id="download_xlsx" type="button" class="primary hidden">⬇ XLSX ডাউনলোড</button>
+    <button id="download_json" type="button" class="hidden">⬇ Config JSON ডাউনলোড</button>
+  </div>
+
+  <div id="warning_box" class="warning hidden"></div>
+
+  <section class="card hidden" id="preview_card">
+    <h2 id="preview_title"></h2>
+    <table id="preview_table">
+      <thead>
+        <tr><th>তারিখ</th><th>দিন</th><th>কাজের বিবরণ</th><th>মন্তব্য</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

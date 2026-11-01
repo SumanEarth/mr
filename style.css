@@ -1,0 +1,61 @@
+* { box-sizing: border-box; }
+body {
+  font-family: "Noto Sans Bengali", "SolaimanLipi", "Hind Siliguri", sans-serif;
+  background: #f2f4f8; color: #1c2733; margin: 0; padding: 24px 12px;
+}
+.container { max-width: 860px; margin: 0 auto; }
+h1 { font-size: 1.5rem; text-align: center; margin: 0 0 4px; }
+.sub { text-align: center; color: #5a6b7d; margin-top: 0; }
+.card {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 10px;
+  padding: 16px; margin: 14px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.card h2 { font-size: 1.05rem; margin: 0 0 10px; color: #184a7c; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+.row label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
+input, select, button {
+  font: inherit; padding: 8px 10px; border: 1px solid #b9c4d0;
+  border-radius: 6px; background: #fff;
+}
+input:focus, select:focus { outline: 2px solid #4a90d9; }
+button { cursor: pointer; background: #eef2f7; }
+button:hover { background: #e2e9f2; }
+button.primary { background: #1d6fb8; color: #fff; border-color: #155a99; font-weight: 700; }
+button.primary:hover { background: #155a99; }
+.w-full { flex: 1 1 100%; }
+.item-list { list-style: none; padding: 0; margin: 6px 0 0; }
+.item-list li {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  background: #f6f8fb; border: 1px solid #e3e8ef; border-radius: 6px;
+  padding: 6px 10px; margin: 4px 0;
+}
+.item-list button { padding: 2px 8px; color: #b02a2a; border-color: #d9a0a0; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+.hidden { display: none; }
+.warning {
+  background: #fff4e0; border: 1px solid #e6b35a; color: #7a4c00;
+  border-radius: 8px; padding: 10px 14px; margin: 10px 0; white-space: pre-line;
+}
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { border: 1px solid #b9c4d0; padding: 6px 8px; text-align: left; vertical-align: top; }
+thead th { background: #eaf1f9; text-align: center; }
+th:nth-child(-n+2), td:nth-child(-n+2) { text-align: center; white-space: nowrap; }
+@media print { body { background:#fff; } .card, .actions, .warning, .sub, button { display:none !important; } }
+
+/* ---------- password gate ---------- */
+.gate {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #10314e 0%, #1d6fb8 100%);
+}
+.gate-box {
+  background: #fff; border-radius: 12px; padding: 32px 28px;
+  width: min(92vw, 360px); text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.gate-box h1 { margin: 0; font-size: 1.3rem; }
+.gate-sub { margin: 0 0 4px; color: #5a6b7d; font-size: .92rem; }
+.gate-error { margin: 0; color: #b02a2a; font-size: .88rem; }
+.gate-box input { text-align: center; }
+
