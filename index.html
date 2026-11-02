@@ -47,13 +47,32 @@ table { width: 100%; border-collapse: collapse; font-size: .92rem; }
 th, td { border: 1px solid #b9c4d0; padding: 6px 8px; text-align: left; vertical-align: top; }
 thead th { background: #eaf1f9; text-align: center; }
 th:nth-child(-n+2), td:nth-child(-n+2) { text-align: center; white-space: nowrap; }
+.lock-screen { padding-top: 12vh; }
+.lock-card { max-width: 420px; margin: 0 auto; }
+.lock-card h1 { margin-bottom: 12px; }
+.lock-form { display: flex; flex-direction: column; gap: 12px; }
+.lock-form label { display: flex; flex-direction: column; gap: 6px; }
+.lock-error { margin-bottom: 0; }
 @media print { body { background:#fff; } .card, .actions, .warning, .sub, button { display:none !important; } }
 
 </style>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-<div class="container" id="app">
+<main class="container lock-screen" id="lock_screen">
+  <section class="card lock-card">
+    <h1>পাসওয়ার্ড সুরক্ষিত</h1>
+    <p class="sub">প্রতিবেদন জেনারেটর ব্যবহার করতে পাসওয়ার্ড দিন।</p>
+    <form class="lock-form" id="unlock_form">
+      <label for="app_password">পাসওয়ার্ড
+        <input type="password" id="app_password" inputmode="numeric" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="primary">প্রবেশ করুন</button>
+    </form>
+    <p id="password_error" class="warning lock-error hidden" role="alert">ভুল পাসওয়ার্ড। আবার চেষ্টা করুন।</p>
+  </section>
+</main>
+<div class="container hidden" id="app">
   <h1>মাসিক অগ্রগতি প্রতিবেদন জেনারেটর</h1>
   <p class="sub">তথ্য যোগ করুন → প্রতিবেদন তৈরি করুন → XLSX ডাউনলোড করুন</p>
 
@@ -150,6 +169,7 @@ th:nth-child(-n+2), td:nth-child(-n+2) { text-align: center; white-space: nowrap
    generate_report.py-এর সব নিয়ম JS-এ রিপ্লিকেট করা হয়েছে। */
 
 /* ---------- constants ---------- */
+const APP_PASSWORD = "01750497710";
 const BN_DIGITS = { "0": "০", "1": "১", "2": "২", "3": "৩", "4": "৪",
                     "5": "৫", "6": "৬", "7": "৭", "8": "৮", "9": "৯" };
 const BN_WEEKDAYS = ["সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার",
@@ -414,6 +434,18 @@ function showPreview(result) {
 
 /* ---------- init ---------- */
 function init() {
+  $("unlock_form").addEventListener("submit", event => {
+    event.preventDefault();
+    if ($("app_password").value !== APP_PASSWORD) {
+      $("password_error").classList.remove("hidden");
+      $("app_password").value = "";
+      $("app_password").focus();
+      return;
+    }
+    $("password_error").classList.add("hidden");
+    $("lock_screen").classList.add("hidden");
+    $("app").classList.remove("hidden");
+  });
   $("month").innerHTML = BN_MONTHS.map((m, i) => `<option value="${i + 1}">${m}</option>`).join("");
   const thisYear = new Date().getFullYear();
   $("year").innerHTML = Array.from({ length: 6 },
